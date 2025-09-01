@@ -80,6 +80,8 @@ class AppCseController extends Controller
 
     public function store(StoreAppCseRequest $request)
     {
+        abort_if(Gate::denies('app_cse_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        
         $id = $request->app_id;
         $data = $request->all();
 

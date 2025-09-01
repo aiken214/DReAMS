@@ -54,6 +54,7 @@ class PpmpController extends Controller
 
     public function store(StorePpmpRequest $request)
     {
+        abort_if(Gate::denies('ppmp_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $data = $request->all();
         $data['station_id'] = Auth::user()->station_id;
         $data['prepared_by'] = Auth::user()->name;
@@ -76,6 +77,8 @@ class PpmpController extends Controller
 
     public function update(UpdatePpmpRequest $request, Ppmp $ppmp)
     {
+        abort_if(Gate::denies('ppmp_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+        
         $ppmp->update($request->all());
 
         return redirect()->route('user.ppmp.index');

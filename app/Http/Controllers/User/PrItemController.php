@@ -65,6 +65,8 @@ class PrItemController extends Controller
 
     public function store(StorePrItemRequest $request)
     {
+        abort_if(Gate::denies('purchase_request_item_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $data = $request->all();
         $id = $request->purchase_request_id;
         $ppmp_id = $request->ppmp_item_id;
@@ -95,6 +97,8 @@ class PrItemController extends Controller
 
     public function update(UpdatePrItemRequest $request, PurchaseRequestItem $purchaseRequestItem)
     {
+        abort_if(Gate::denies('purchase_request_item_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+
         $id = $purchaseRequestItem->purchase_request_id;
         $purchaseRequestItem->update($request->all());        
 
@@ -124,6 +128,8 @@ class PrItemController extends Controller
 
     public function massDestroy(MassDestroyPrItemRequest $request)
     {
+        abort_if(Gate::denies('purchase_request_item_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        
         $purchaseRequestItems = PurchaseRequestItem::whereIn('id', $request->input('ids'))->get();
 
         foreach ($purchaseRequestItems as $purchaseRequestItem) {

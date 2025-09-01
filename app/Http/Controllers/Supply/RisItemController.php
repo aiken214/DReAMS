@@ -141,6 +141,8 @@ class RisItemController extends Controller
 
     public function store(StoreRisItemRequest $request)
     {
+        abort_if(Gate::denies('ris_item_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+       
         $id = $request->ris_id;     
         $data = $request->all();
 
@@ -189,6 +191,8 @@ class RisItemController extends Controller
 
     public function update(UpdateRisItemRequest $request, RisItem $risItem)
     {
+        abort_if(Gate::denies('ris_item_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+        
         $id = $request->ris_id;
         $risItemId = $request->id;
         $data = $request->all();

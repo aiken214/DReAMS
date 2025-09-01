@@ -76,6 +76,8 @@ class IarItemController extends Controller
 
     public function store(StoreIarItemRequest $request, StoreStockCardRequest $storeStockCardRequest, StoreSemiExpendableCardRequest $storeSemiExpendableCardRequest, StorePropertyCardRequest $storePropertyCardRequest)
     {
+        abort_if(Gate::denies('iar_item_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        
         $id = $request->iar_id;     
         $data = $request->all();
         $purchase_order_item_id = $request->purchase_order_item_id;
@@ -132,6 +134,8 @@ class IarItemController extends Controller
 
     public function storeFromPettyCash(StoreIarItemRequest $request, StoreStockCardRequest $storeStockCardRequest, StoreSemiExpendableCardRequest $storeSemiExpendableCardRequest, StorePropertyCardRequest $storePropertyCardRequest)
     {
+        abort_if(Gate::denies('iar_item_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $id = $request->iar_id;     
         $data = $request->all();
         $purchase_request_item_id = $request->purchase_request_item_id;
@@ -185,6 +189,8 @@ class IarItemController extends Controller
 
     public function update(UpdateIarItemRequest $request, IarItem $iarItem)
     {
+        abort_if(Gate::denies('iar_item_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $iar_item_id = $request->id;
         $id = $request->iar_id;
         $iarItem->update($request->all());        

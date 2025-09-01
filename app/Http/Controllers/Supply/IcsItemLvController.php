@@ -48,6 +48,8 @@ class IcsItemLvController extends Controller
 
     public function update(UpdateIcsItemLvRequest $request, IcsItemLv $icsItemLv)
     {
+        abort_if(Gate::denies('ics_item_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        
         $id = $icsItemLv->ics_lv_id;
  
         $icsItemLv->update($request->all());

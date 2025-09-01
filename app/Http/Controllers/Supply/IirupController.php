@@ -49,6 +49,8 @@ class IirupController extends Controller
 
     public function store(StoreIirupRequest $request)
     {
+        abort_if(Gate::denies('iirup_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $data = $request->all();
     
         $iirup = Iirup::create($data);
@@ -68,6 +70,8 @@ class IirupController extends Controller
 
     public function storeFromRpcppe(StoreIirupRequest $request)
     {
+        abort_if(Gate::denies('iirup_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $data = $request->all();
     
         $iirup = Iirup::create($data);
@@ -87,6 +91,8 @@ class IirupController extends Controller
 
     public function update(UpdateIirupRequest $request, Iirup $iirup)
     {
+        abort_if(Gate::denies('iirup_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+        
         $iirup->update($request->all());
 
         return redirect()->route('supply.iirup.index');

@@ -58,6 +58,8 @@ class RrspItemLvController extends Controller
     
     public function store(StoreRrspItemLvRequest $request)
     {
+        abort_if(Gate::denies('rrsp_item_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $id = $request->rrsp_lv_id;
         $icsId = $request->item_id;
         $returned_quantity = is_numeric($request->returned_quantity) ? (float) $request->returned_quantity : 0;
@@ -120,6 +122,8 @@ class RrspItemLvController extends Controller
 
     public function update(UpdateRrspItemLvRequest $request, RrspItemLv $rrspItemLv)
     {
+        abort_if(Gate::denies('rrsp_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+        
         $id = $request->rrsp_lv_id;
         $icsId = $request->ics_item_lv_id;
         $returned_quantity = is_numeric($request->returned_quantity) ? (float) $request->returned_quantity : 0;

@@ -56,6 +56,8 @@ class ParController extends Controller
 
     public function store(StoreParRequest $request)
     {
+        abort_if(Gate::denies('par_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $id = $request->ris_id;
         
         // Get RIS items under the given RIS ID with category HVSE
@@ -158,6 +160,8 @@ class ParController extends Controller
 
     public function update(UpdateParRequest $request, Par $par)
     {
+        abort_if(Gate::denies('par_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+        
         $par->update($request->all());
 
         return redirect()->route('supply.par.index');

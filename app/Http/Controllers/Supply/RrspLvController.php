@@ -59,6 +59,8 @@ class RrspLvController extends Controller
 
     public function store(StoreRrspLvRequest $request)
     {
+        abort_if(Gate::denies('rrsp_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $ics_lv_id = $request->ics_lv_id;
         $data = $request->all();
         $data['rrsp_lv_no'] =  $this->generateRrspNo();       
@@ -114,6 +116,7 @@ class RrspLvController extends Controller
 
     public function update(UpdateRrspLvRequest $request, RrspLv $rrspLv)
     {
+        abort_if(Gate::denies('rrsp_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
     
         $rrspLv->update($request->all());
 

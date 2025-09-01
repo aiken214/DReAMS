@@ -54,6 +54,8 @@ class DonationItemController extends Controller
     
     public function store(StoreDonationItemRequest $request, StoreStockCardRequest $storeStockCardRequest, StoreSemiExpendableCardRequest $storeSemiExpendableCardRequest, StorePropertyCardRequest $storePropertyCardRequest)
     {
+        abort_if(Gate::denies('donation_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $id = $request->donation_id;     
         $data = $request->all();
         // dd($data);
@@ -105,6 +107,8 @@ class DonationItemController extends Controller
 
     public function update(UpdateDonationItemRequest $request, DonationItem $donationItem)
     {
+        abort_if(Gate::denies('donation_item_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+        
         $donation_item_id = $request->id;
         $id = $request->donation_id;
 

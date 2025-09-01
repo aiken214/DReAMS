@@ -49,6 +49,8 @@ class IiruspController extends Controller
 
     public function store(StoreIiruspRequest $request)
     {
+        abort_if(Gate::denies('iirusp_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $data = $request->all();
    
         $iirusp = Iirusp::create($data);
@@ -68,6 +70,8 @@ class IiruspController extends Controller
 
     public function storeFromRpcsp(StoreIiruspRequest $request)
     {
+        abort_if(Gate::denies('iirusp_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $data = $request->all();
     
         $iirup = Iirusp::create($data);
@@ -87,6 +91,8 @@ class IiruspController extends Controller
 
     public function update(UpdateIiruspRequest $request, Iirusp $iirusp)
     {
+        abort_if(Gate::denies('iirusp_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+        
         $iirusp->update($request->all());
 
         return redirect()->route('supply.iirusp.index');

@@ -33,6 +33,7 @@ class StockController extends Controller
     public function show($id)
     {
         abort_if(Gate::denies('stock_card_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        
         $stockCard = StockCard::with([
             'iar:id,iar_no,date,supplier_id', 
             'iar.supplier:id,name', 

@@ -133,6 +133,8 @@ class RsmiController extends Controller
 
     public function store(StoreRsmiRequest $request)
     {
+        abort_if(Gate::denies('rsmi_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $data = $request->all();
         $data['rsmi_no'] = $this->generateRsmiNo();
 
@@ -191,6 +193,8 @@ class RsmiController extends Controller
 
     public function update(UpdateRsmiRequest $request, Rsmi $rsmi)
     {
+        abort_if(Gate::denies('rsmi_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+        
         $rsmi->update($request->all());
 
         return redirect()->route('supply.rsmi.index');

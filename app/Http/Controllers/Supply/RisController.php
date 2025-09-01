@@ -222,6 +222,8 @@ class RisController extends Controller
 
     public function store(StoreRisRequest $request)
     {
+        abort_if(Gate::denies('ris_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $data = $request->all();
         $data['ris_no'] =  $this->generateRisNo();
     
@@ -256,6 +258,7 @@ class RisController extends Controller
     public function edit(Ris $ris, $id)
     {
         abort_if(Gate::denies('ris_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+
         $ris = Ris::find($id); // Fetch RIS by ID
 
         if (!$ris) {
@@ -271,6 +274,8 @@ class RisController extends Controller
 
     public function update(UpdateRisRequest $request, Ris $ris, $id)
     {
+        abort_if(Gate::denies('ris_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+        
         $ris = Ris::findOrFail($id);
         $ris->update($request->all());
 

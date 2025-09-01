@@ -50,6 +50,8 @@ class IcsItemHvController extends Controller
 
     public function update(UpdateIcsItemHvRequest $request, IcsItemHv $icsItemHv)
     {
+        abort_if(Gate::denies('ics_item_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+        
         $id = $icsItemHv->ics_hv_id;
  
         $icsItemHv->update($request->all());

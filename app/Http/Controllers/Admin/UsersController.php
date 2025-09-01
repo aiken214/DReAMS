@@ -40,6 +40,8 @@ class UsersController extends Controller
 
     public function store(StoreUserRequest $request)
     {
+        abort_if(Gate::denies('user_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $user = User::create($request->all());
         $user->roles()->sync($request->input('roles', []));
 
@@ -61,6 +63,8 @@ class UsersController extends Controller
 
     public function update(UpdateUserRequest $request, User $user)
     {
+        abort_if(Gate::denies('user_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $user->update($request->all());
         $user->roles()->sync($request->input('roles', []));
 
@@ -87,6 +91,8 @@ class UsersController extends Controller
 
     public function massDestroy(MassDestroyUserRequest $request)
     {
+        abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        
         $users = User::find(request('ids'));
 
         foreach ($users as $user) {

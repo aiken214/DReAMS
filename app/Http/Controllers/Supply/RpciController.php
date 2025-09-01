@@ -62,6 +62,8 @@ class RpciController extends Controller
 
     public function store(StoreRpciRequest $request)
     {
+        abort_if(Gate::denies('rpci_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $data = $request->all();
         
         $rpci = Rpci::create($data);
@@ -80,6 +82,8 @@ class RpciController extends Controller
 
     public function update(UpdateRpciRequest $request, Rpci $rpci)
     {
+        abort_if(Gate::denies('rpci_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+        
         $rpci->update($request->all());
 
         return redirect()->route('supply.rpci.index');

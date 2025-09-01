@@ -61,6 +61,8 @@ class AppController extends Controller
 
     public function store(StoreAppRequest $request)
     {
+        abort_if(Gate::denies('app_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $data = $request->all();        
         $app = App::create($data);
 
@@ -76,6 +78,8 @@ class AppController extends Controller
 
     public function update(UpdateAppRequest $request, App $app)
     {
+        abort_if(Gate::denies('app_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+
         $app->update($request->all());
 
         return redirect()->route('bac.app.index');

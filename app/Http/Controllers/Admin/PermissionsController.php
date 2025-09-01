@@ -31,6 +31,8 @@ class PermissionsController extends Controller
 
     public function store(StorePermissionRequest $request)
     {
+        abort_if(Gate::denies('permission_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $permission = Permission::create($request->all());
 
         return redirect()->route('admin.permissions.index');
@@ -45,6 +47,8 @@ class PermissionsController extends Controller
 
     public function update(UpdatePermissionRequest $request, Permission $permission)
     {
+        abort_if(Gate::denies('permission_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $permission->update($request->all());
 
         return redirect()->route('admin.permissions.index');
@@ -68,6 +72,8 @@ class PermissionsController extends Controller
 
     public function massDestroy(MassDestroyPermissionRequest $request)
     {
+        abort_if(Gate::denies('permission_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        
         $permissions = Permission::find(request('ids'));
 
         foreach ($permissions as $permission) {

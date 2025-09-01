@@ -45,6 +45,8 @@ class ItemsListController extends Controller
 
     public function store(StoreItemsListRequest $request)
     {
+        abort_if(Gate::denies('items_list_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $items_list = ItemsList::create($request->all());
 
         return redirect()->route('admin.items_list.index');
@@ -61,6 +63,8 @@ class ItemsListController extends Controller
 
     public function update(UpdateItemsListRequest $request, ItemsList $items_list)
     {
+        abort_if(Gate::denies('items_list_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+
         $items_list->update($request->all());
 
         return redirect()->route('admin.items_list.index');
@@ -84,6 +88,8 @@ class ItemsListController extends Controller
 
     public function massDestroy(MassDestroyItemsListRequest $request)
     {
+        abort_if(Gate::denies('items_list_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        
         ItemsList::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);

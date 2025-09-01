@@ -67,6 +67,8 @@ class AssetItemController extends Controller
     
     public function store(StoreAssetItemRequest $request, StoreStockCardRequest $storeStockCardRequest, StoreSemiExpendableCardRequest $storeSemiExpendableCardRequest, StorePropertyCardRequest $storePropertyCardRequest)
     {
+        abort_if(Gate::denies('asset_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $id = $request->asset_id;     
         $data = $request->all();
         
@@ -118,6 +120,8 @@ class AssetItemController extends Controller
 
     public function update(UpdateAssetItemRequest $request, AssetItem $assetItem)
     {
+        abort_if(Gate::denies('asset_item_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+        
         $asset_item_id = $request->id;
         $id = $request->asset_id;
 

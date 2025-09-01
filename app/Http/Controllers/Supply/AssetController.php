@@ -49,6 +49,8 @@ class AssetController extends Controller
 
     public function store(StoreAssetRequest $request)
     {
+        abort_if(Gate::denies('asset_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $data = $request->all();
         $data['asset_no'] =  $this->generateAssetNo();
        
@@ -96,6 +98,8 @@ class AssetController extends Controller
 
     public function update(UpdateAssetRequest $request, Asset $asset)
     {
+        abort_if(Gate::denies('asset_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+
         $asset->update($request->all());
 
         return redirect()->route('supply.asset.index');
@@ -121,6 +125,8 @@ class AssetController extends Controller
 
     public function massDestroy(MassDestroyAssetRequest $request)
     {
+        abort_if(Gate::denies('asset_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        
         Asset::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);

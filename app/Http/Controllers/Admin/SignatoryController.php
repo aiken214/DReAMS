@@ -43,6 +43,8 @@ class SignatoryController extends Controller
 
     public function store(StoreSignatoryRequest $request)
     {
+        abort_if(Gate::denies('signatory_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $signatories = Signatory::create($request->all());
 
         return redirect()->route('admin.signatory.index');
@@ -59,6 +61,8 @@ class SignatoryController extends Controller
 
     public function update(UpdateSignatoryRequest $request, Signatory $signatory)
     {
+        abort_if(Gate::denies('signatory_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+
         $signatory->update($request->all());
 
         return redirect()->route('admin.signatory.index');
@@ -75,6 +79,8 @@ class SignatoryController extends Controller
 
     public function massDestroy(MassDestroySignatoryRequest $request)
     {
+        abort_if(Gate::denies('signatory_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        
         Signatory::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);

@@ -70,6 +70,8 @@ class RpcspController extends Controller
 
     public function store(StoreRpcspRequest $request)
     {
+        abort_if(Gate::denies('rpcsp_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $data = $request->all();
         
         $rpcsp = Rpcsp::create($data);
@@ -88,6 +90,8 @@ class RpcspController extends Controller
 
     public function storeFromIcsHv(StoreRpcspRequest $request)
     {    
+        abort_if(Gate::denies('rpcsp_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $station = Station::where('station_name', $request->station)->first();
 
         if (!$station) {
@@ -116,6 +120,8 @@ class RpcspController extends Controller
 
     public function update(UpdateRpcspRequest $request, Rpcsp $rpcsp)
     {
+        abort_if(Gate::denies('rpcsp_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+        
         $rpcsp->update($request->all());
 
         return redirect()->route('supply.rpcsp.index');

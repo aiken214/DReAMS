@@ -60,6 +60,8 @@ class AppItemController extends Controller
 
     public function store(StoreAppItemRequest $request)
     {
+        abort_if(Gate::denies('app_item_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $id = $request->app_id;
         $data = $request->all();
         
@@ -94,6 +96,8 @@ class AppItemController extends Controller
 
     public function update(UpdateAppItemRequest $request, AppItem $appItem)
     {
+        abort_if(Gate::denies('app_item_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+        
         $appItem->update($request->all());
         $id = $request->app_id;
 

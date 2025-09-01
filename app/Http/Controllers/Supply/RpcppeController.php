@@ -68,6 +68,8 @@ class RpcppeController extends Controller
 
     public function store(StoreRpcppeRequest $request)
     {
+        abort_if(Gate::denies('rpcppe_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $station = Station::where('id', $request->station_id)->first();
 
         if (!$station) {
@@ -94,7 +96,9 @@ class RpcppeController extends Controller
     }
 
     public function storeFromPar(StoreRpcppeRequest $request)
-    {    
+    { 
+        abort_if(Gate::denies('rpcppe_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+            
         $station = Station::where('station_name', $request->station)->first();
 
         if (!$station) {
@@ -126,6 +130,8 @@ class RpcppeController extends Controller
 
     public function update(UpdateRpcppeRequest $request, Rpcppe $rpcppe)
     {
+        abort_if(Gate::denies('rpcppe_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+        
         $rpcppe->update($request->all());
 
         return redirect()->route('supply.rpcppe.index');

@@ -48,7 +48,7 @@ class PpmpItemController extends Controller
     
     public function create(Request $request)
     {
-        abort_if(Gate::denies('ppmp_item_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('ppmp_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
   
         $id = $request->id;
         $items = ItemsList::all()->sortBy('description');
@@ -59,6 +59,8 @@ class PpmpItemController extends Controller
 
     public function store(StorePpmpItemRequest $request)
     {
+        abort_if(Gate::denies('ppmp_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+
         $data = $request->all();
         $id = $request->ppmp_id;        
         $data['balance'] = $data['quantity'];
@@ -79,6 +81,8 @@ class PpmpItemController extends Controller
 
     public function update(UpdatePpmpItemRequest $request, PpmpItem $ppmp_item)
     {
+        abort_if(Gate::denies('ppmp_item_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+
         $id = $ppmp_item->ppmp_id;
         $ppmp_item->update($request->all());        
 
@@ -103,6 +107,8 @@ class PpmpItemController extends Controller
 
     public function massDestroy(MassDestroyPpmpItemRequest $request)
     {
+        abort_if(Gate::denies('ppmp_item_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        
         PpmpItem::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);

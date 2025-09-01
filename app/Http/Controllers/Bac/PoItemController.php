@@ -58,6 +58,8 @@ class PoItemController extends Controller
 
     public function store(StorePoItemRequest $request)
     {
+        abort_if(Gate::denies('purchase_order_item_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $data = $request->all();
         $id = $request->purchase_order_id;
 
@@ -82,6 +84,8 @@ class PoItemController extends Controller
 
     public function update(UpdatePoItemRequest $request, PurchaseOrderItem $purchaseOrderItem)
     {
+        abort_if(Gate::denies('purchase_order_item_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+
         $purchaseOrderItem->update($request->all());
         $id = $request->purchase_order_id;
 
@@ -106,6 +110,8 @@ class PoItemController extends Controller
 
     public function massDestroy(MassDestroyPoItemRequest $request)
     {
+        abort_if(Gate::denies('purchase_order_item_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        
         PurchaseOrderItem::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);

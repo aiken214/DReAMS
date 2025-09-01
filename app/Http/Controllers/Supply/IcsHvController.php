@@ -58,6 +58,8 @@ class IcsHvController extends Controller
 
     public function store(StoreIcsHvRequest $request)
     {
+        abort_if(Gate::denies('ics_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $id = $request->ris_id;
 
         // Get RIS items under the given RIS ID with category HVSE
@@ -173,6 +175,8 @@ class IcsHvController extends Controller
 
     public function update(UpdateIcsHvRequest $request, IcsHv $icsHv)
     {
+        abort_if(Gate::denies('ics_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+        
         $icsHv->update($request->all());
 
         return redirect()->route('supply.ics_hv.index');

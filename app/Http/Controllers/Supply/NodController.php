@@ -67,6 +67,8 @@ class NodController extends Controller
 
     public function update(Request $request, $id)
     {
+        abort_if(Gate::denies('iar_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+        
         $data = Iar::find($id);
 		$nod_data = [
             'invoice_no' => $request->invoice_no,

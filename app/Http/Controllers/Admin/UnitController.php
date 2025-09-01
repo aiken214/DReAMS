@@ -41,6 +41,8 @@ class UnitController extends Controller
 
     public function store(StoreUnitRequest $request)
     {
+        abort_if(Gate::denies('unit_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $unit = Unit::create($request->all());
 
         return redirect()->route('admin.unit.index');
@@ -55,6 +57,8 @@ class UnitController extends Controller
 
     public function update(UpdateUnitRequest $request, Unit $unit)
     {
+        abort_if(Gate::denies('unit_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+
         $unit->update($request->all());
 
         return redirect()->route('admin.unit.index');
@@ -78,6 +82,8 @@ class UnitController extends Controller
 
     public function massDestroy(MassDestroyUnitRequest $request)
     {
+        abort_if(Gate::denies('unit_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        
         Unit::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);

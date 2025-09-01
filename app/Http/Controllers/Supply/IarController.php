@@ -73,6 +73,8 @@ class IarController extends Controller
 
     public function store(StoreIarRequest $request)
     {
+        abort_if(Gate::denies('iar_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $date = Carbon::now();
         $data = $request->all();
         $data['iar_no'] =  $this->generateIarNo();
@@ -148,6 +150,8 @@ class IarController extends Controller
 
     public function update(UpdateIarRequest $request, Iar $iar)
     {
+        abort_if(Gate::denies('iar_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+        
         $iar->update($request->all());
 
         return redirect()->route('supply.iar.index');

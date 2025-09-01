@@ -46,6 +46,7 @@ class StationController extends Controller
 
     public function store(StoreStationRequest $request)
     {
+        abort_if(Gate::denies('station_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $station = Station::create($request->all());
 
@@ -64,6 +65,7 @@ class StationController extends Controller
 
     public function update(UpdateStationRequest $request, Station $station)
     {
+        abort_if(Gate::denies('station_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
        
         $station->update($request->all());
 
@@ -88,6 +90,8 @@ class StationController extends Controller
 
     public function massDestroy(MassDestroyStationRequest $request)
     {
+        abort_if(Gate::denies('station_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        
         Station::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);

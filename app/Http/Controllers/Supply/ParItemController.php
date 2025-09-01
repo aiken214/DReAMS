@@ -48,6 +48,8 @@ class ParItemController extends Controller
 
     public function update(UpdateParItemRequest $request, ParItem $parItem)
     {
+        abort_if(Gate::denies('par_item_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        
         $id = $parItem->par_id;
  
         $parItem->update($request->all());

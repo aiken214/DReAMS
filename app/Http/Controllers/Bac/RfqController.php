@@ -63,6 +63,8 @@ class RfqController extends Controller
 
     public function store(StoreRfqRequest $request)
     {
+        abort_if(Gate::denies('request_for_quotation_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $data = $request->all();
         $data['rfq_no'] =  $this->generateRfqNo();
 
@@ -116,6 +118,8 @@ class RfqController extends Controller
 
     public function update(UpdateRfqRequest $request, RequestForQuotation $requestForQuotation)
     {
+        abort_if(Gate::denies('request_for_quotation_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+
         $requestForQuotation->update($request->all());
 
         return redirect()->route('bac.request_for_quotation.index');
@@ -145,6 +149,8 @@ class RfqController extends Controller
 
     public function massDestroy(MassDestroyRfqRequest $request)
     {
+        abort_if(Gate::denies('request_for_quotation_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         RequestForQuotation::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);

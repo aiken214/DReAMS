@@ -91,6 +91,8 @@ class PoController extends Controller
 
     public function store(StorePoRequest $request)
     {
+        abort_if(Gate::denies('purchase_order_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $date = Carbon::now();
         $data = $request->all();
         $data['po_no'] =  $this->generatePoNo();
@@ -140,6 +142,8 @@ class PoController extends Controller
 
     public function update(UpdatePoRequest $request, PurchaseOrder $purchaseOrder)
     {
+        abort_if(Gate::denies('purchase_order_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+
         $purchaseOrder->update($request->all());
 
         return redirect()->route('bac.purchase_order.index');
@@ -165,6 +169,8 @@ class PoController extends Controller
 
     public function massDestroy(MassDestroyPoRequest $request)
     {
+        abort_if(Gate::denies('purchase_order_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        
         PurchaseOrder::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);

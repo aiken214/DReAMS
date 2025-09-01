@@ -45,6 +45,8 @@ class SupplierController extends Controller
 
     public function store(StoreSupplierRequest $request)
     {
+        abort_if(Gate::denies('supplier_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $supplier = Supplier::create($request->all());
 
         return redirect()->route('bac.supplier.index');
@@ -59,6 +61,8 @@ class SupplierController extends Controller
 
     public function update(UpdateSupplierRequest $request, Supplier $supplier)
     {
+        abort_if(Gate::denies('supplier_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+
         $supplier->update($request->all());
 
         return redirect()->route('bac.supplier.index');
@@ -82,6 +86,8 @@ class SupplierController extends Controller
 
     public function massDestroy(MassDestroySupplierRequest $request)
     {
+        abort_if(Gate::denies('supplier_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        
         Supplier::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);

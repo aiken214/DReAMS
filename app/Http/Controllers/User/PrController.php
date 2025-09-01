@@ -52,6 +52,7 @@ class PrController extends Controller
     public function create()
     {
         abort_if(Gate::denies('purchase_request_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $user_id = Auth::user()->id;
 
         $ppmpFunds = FundAllocation::with('ppmp') // Ensure the relationship is eager loaded
@@ -75,6 +76,8 @@ class PrController extends Controller
 
     public function store(StorePrRequest $request)
     {
+        abort_if(Gate::denies('purchase_request_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $data = $request->all();
         $station = Auth::user()->station_id;
         $data['station_id'] = Auth::user()->station_id;
@@ -105,6 +108,8 @@ class PrController extends Controller
 
     public function update(UpdatePrRequest $request, PurchaseRequest $purchaseRequest)
     {
+        abort_if(Gate::denies('purchase_request_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+
         $purchaseRequest->update($request->all());
 
         return redirect()->route('user.purchase_request.index');
@@ -137,6 +142,7 @@ class PrController extends Controller
 
     public function massDestroy(MassDestroyPrRequest $request)
     {
+        abort_if(Gate::denies('purchase_request_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         // Retrieve the PurchaseRequests to be deleted
         $purchaseRequests = PurchaseRequest::whereIn('id', $request->input('ids'))->get();
 

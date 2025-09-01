@@ -50,6 +50,8 @@ class EmployeeController extends Controller
 
     public function store(StoreEmployeeRequest $request)
     {
+        abort_if(Gate::denies('employee_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $employee = Employee::create($request->all());
 
         return redirect()->route('admin.employees.index');
@@ -82,6 +84,8 @@ class EmployeeController extends Controller
 
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
+        abort_if(Gate::denies('employee_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $employee->update($request->all());
 
         return redirect()->route('admin.employees.index');
@@ -107,6 +111,8 @@ class EmployeeController extends Controller
 
     public function massDestroy(MassDestroyEmployeeRequest $request)
     {
+        abort_if(Gate::denies('employee_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        
         Employee::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);

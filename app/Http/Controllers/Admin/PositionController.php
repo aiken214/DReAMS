@@ -41,6 +41,8 @@ class PositionController extends Controller
 
     public function store(StorePositionRequest $request)
     {
+        abort_if(Gate::denies('position_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $employee = Position::create($request->all());
 
         return redirect()->route('admin.position.index');
@@ -55,6 +57,8 @@ class PositionController extends Controller
 
     public function update(UpdatePositionRequest $request, Position $position)
     {
+        abort_if(Gate::denies('position_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+
         $position->update($request->all());
 
         return redirect()->route('admin.position.index');
@@ -79,6 +83,8 @@ class PositionController extends Controller
 
     public function massDestroy(MassDestroyPositionRequest $request)
     {
+        abort_if(Gate::denies('position_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        
         Position::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);

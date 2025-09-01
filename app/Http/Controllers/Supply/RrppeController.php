@@ -59,6 +59,8 @@ class RrppeController extends Controller
 
     public function store(StoreRrppeRequest $request)
     {
+        abort_if(Gate::denies('rrppe_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $par_id = $request->par_id;
         $data = $request->all();
         $data['rrppe_no'] =  $this->generateRrppeNo();       
@@ -126,6 +128,8 @@ class RrppeController extends Controller
 
     public function update(UpdateRrppeRequest $request, Rrppe $rrppe)
     {
+        abort_if(Gate::denies('rrppe_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+        
         $par_id = $rrppe->par_id;        
         ParItem::where('par_id', $par_id)->update([
             'serviceability' => $request->serviceability,

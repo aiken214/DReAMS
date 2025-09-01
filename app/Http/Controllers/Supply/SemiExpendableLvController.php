@@ -34,6 +34,7 @@ class SemiExpendableLvController extends Controller
     public function show($id)
     {
         abort_if(Gate::denies('stock_card_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        
         $semiExpendableCard = SemiExpendableCard::with([
             'iar:id,iar_no,date,supplier_id', 
             'iar.supplier:id,name', 

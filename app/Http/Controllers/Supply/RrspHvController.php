@@ -59,6 +59,8 @@ class RrspHvController extends Controller
 
     public function store(StoreRrspHvRequest $request)
     {
+        abort_if(Gate::denies('rrsp_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $ics_hv_id = $request->ics_hv_id;
         $data = $request->all();
         $data['rrsp_hv_no'] =  $this->generateRrspNo();       
@@ -126,6 +128,8 @@ class RrspHvController extends Controller
 
     public function update(UpdateRrspHvRequest $request, RrspHv $rrspHv)
     {
+        abort_if(Gate::denies('rrsp_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
+        
         $ics_hv_id = $rrspHv->ics_hv_id;        
         IcsItemHv::where('ics_hv_id', $ics_hv_id)->update([
             'serviceability' => $request->serviceability,

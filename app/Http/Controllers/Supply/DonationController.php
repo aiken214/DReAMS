@@ -50,6 +50,8 @@ class DonationController extends Controller
 
     public function store(StoreDonationRequest $request)
     {
+        abort_if(Gate::denies('donation_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $data = $request->all();
         $data['donation_no'] =  $this->generateDonationNo();
        
@@ -96,6 +98,8 @@ class DonationController extends Controller
 
     public function update(UpdateDonationRequest $request, Donation $donation)
     {
+        abort_if(Gate::denies('donation_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $donation->update($request->all());
 
         return redirect()->route('supply.donation.index');
@@ -121,6 +125,8 @@ class DonationController extends Controller
 
     public function massDestroy(MassDestroyDonationRequest $request)
     {
+        abort_if(Gate::denies('donation_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        
         Donation::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
